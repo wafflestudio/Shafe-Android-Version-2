@@ -4,6 +4,8 @@ import android.graphics.drawable.Drawable;
 
 /**
  * Created by heesu on 16. 8. 7..
+ *
+ * Gridview에 나타날 cafe item 데이터에 대한 class
  */
 public class CafeItem {
     //TODO : 마저 구현할 것
