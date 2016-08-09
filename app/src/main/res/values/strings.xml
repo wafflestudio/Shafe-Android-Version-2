@@ -5,4 +5,8 @@
     <string name="action_search">Search</string>
     <string name="action_map">Map</string>
 
+    <string name="title_activity_search">Search</string>
+    <string name="title_activity_map">Map</string>
+    <string name="title_activity_cafe_detail">Cafe Detail</string>
+
 </resources>

@@ -1,5 +1,6 @@
 package com.wafflestudio.shafe;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -48,7 +49,11 @@ public class CafeListFragment extends Fragment{
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View view, int position, long id) {
-                //TODO : 마저 구현할 것
+                CafeItem cafeItem = (CafeItem) cafeListAdapter.getItem(position);
+                Intent intent = new Intent(getActivity(), CafeDetailActivity.class)
+                        .putExtra(Intent.EXTRA_TEXT, cafeItem.getTitle()); //TODO : getTitle이 아니라 다른 것을 써야함. 지금은 테스트 용도
+
+                startActivity(intent);
             }
         });
 
