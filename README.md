@@ -1,2 +1,2 @@
 # Shafe-Android-Version-2
-Android for Shafe Application
+Shafe Application for Android
