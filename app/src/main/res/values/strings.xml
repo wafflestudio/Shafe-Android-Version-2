@@ -1,12 +1,13 @@
 <resources>
 
-    <string name="app_name">Shafe</string>
+    <string name="app_name">샤페</string>
 
-    <string name="action_search">Search</string>
-    <string name="action_map">Map</string>
+    <string name="action_search">검색</string>
+    <string name="action_map">지도</string>
+    <string name="action_list">목록</string>
 
-    <string name="title_activity_search">Search</string>
-    <string name="title_activity_map">Map</string>
+    <string name="title_activity_search">검색</string>
+    <string name="title_activity_map">지도</string>
     <string name="title_activity_cafe_detail">Cafe Detail</string>
 
 </resources>
