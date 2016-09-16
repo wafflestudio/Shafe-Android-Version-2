@@ -1,21 +1,29 @@
 package com.wafflestudio.shafe;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.GridView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by heesu on 16. 8. 5..
  */
 public class CafeListFragment extends Fragment{
 
-    private CafeListAdapter cafeListAdapter;
+    public static RecyclerView.Adapter<CafeListAdapter.ViewHolder> cafeListAdapter;
+    public static List<CafeItem> cafeItemList = new ArrayList<>();
+
+    @Bind(R.id.recyclerview_cafe) RecyclerView recyclerView;
 
     public CafeListFragment() {
     }
@@ -23,39 +31,26 @@ public class CafeListFragment extends Fragment{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        cafeItemList.add( new CafeItem(getResources().getDrawable(R.drawable.sample_0), "Dog 1", "dog description 1"));
+        cafeItemList.add(new CafeItem(getResources().getDrawable(R.drawable.sample_1), "Dog2", "dog description 2"));
+        cafeItemList.add(new CafeItem(getResources().getDrawable(R.drawable.sample_2), "Dog3", "dog description 3"));
+        cafeItemList.add(new CafeItem(getResources().getDrawable(R.drawable.sample_3), "Dog4", "dog description 4"));
+
+        //TODO : 카페를 등록하는건 다른 activity에서 구현한다. 이곳에선 파일에서 저장된 데이터를 불러오는 기능만 구현.
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        cafeListAdapter = new CafeListAdapter();
+
+        cafeListAdapter = new CafeListAdapter(cafeItemList);
 
         View rootView = inflater.inflate(R.layout.fragment_cafelist, container, false);
 
-        // Get a reference to the GridView, and attach this adapter to it.
-        GridView gridView = (GridView) rootView.findViewById(R.id.gridview_cafe);
-        gridView.setAdapter(cafeListAdapter);
-
-        //TODO : dummy data를 실제 data로 교체할 것
-        cafeListAdapter.addItem(getResources().getDrawable(R.drawable.sample_0), "Dog 1", "dog description 1");
-        cafeListAdapter.addItem(getResources().getDrawable(R.drawable.sample_1), "Dog 2", "dog description 2");
-        cafeListAdapter.addItem(getResources().getDrawable(R.drawable.sample_2), "Dog 3", "dog description 3");
-        cafeListAdapter.addItem(getResources().getDrawable(R.drawable.sample_3), "Dog 4", "dog description 4");
-        cafeListAdapter.addItem(getResources().getDrawable(R.drawable.sample_0), "Dog 1", "dog description 1");
-        cafeListAdapter.addItem(getResources().getDrawable(R.drawable.sample_1), "Dog 2", "dog description 2");
-        cafeListAdapter.addItem(getResources().getDrawable(R.drawable.sample_2), "Dog 3", "dog description 3");
-        cafeListAdapter.addItem(getResources().getDrawable(R.drawable.sample_3), "Dog 4", "dog description 4");
-
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView parent, View view, int position, long id) {
-                CafeItem cafeItem = (CafeItem) cafeListAdapter.getItem(position);
-                Intent intent = new Intent(getActivity(), CafeDetailActivity.class)
-                        .putExtra(Intent.EXTRA_TEXT, cafeItem.getTitle()); //TODO : getTitle이 아니라 다른 것을 써야함. 지금은 테스트 용도
-
-                startActivity(intent);
-            }
-        });
+        ButterKnife.bind(this, rootView);
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        recyclerView.setAdapter(cafeListAdapter);
 
         return rootView;
     }

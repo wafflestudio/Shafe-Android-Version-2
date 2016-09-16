@@ -13,15 +13,22 @@ public class CafeItem {
     private String titleStr ;
     private String descStr ;
 
-    public void setIcon(Drawable icon) {
-        iconDrawable = icon ;
+    public CafeItem(Drawable icon, String title, String desc) {
+        this.iconDrawable = icon;
+        this.titleStr = title;
+        this.descStr = desc;
     }
-    public void setTitle(String title) {
-        titleStr = title ;
-    }
-    public void setDesc(String desc) {
-        descStr = desc ;
-    }
+
+//    일단은 안필요해보여서
+//    public void setIcon(Drawable icon) {
+//        iconDrawable = icon ;
+//    }
+//    public void setTitle(String title) {
+//        titleStr = title ;
+//    }
+//    public void setDesc(String desc) {
+//        descStr = desc ;
+//    }
 
     public Drawable getIcon() {
         return this.iconDrawable ;
