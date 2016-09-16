@@ -20,8 +20,8 @@ import butterknife.ButterKnife;
  */
 public class CafeListFragment extends Fragment{
 
-    public RecyclerView.Adapter<CafeListAdapter.ViewHolder> cafeListAdapter;
-    public List<CafeItem> cafeItemList = new ArrayList<>();
+    private RecyclerView.Adapter<CafeListAdapter.ViewHolder> cafeListAdapter;
+    private List<CafeItem> cafeItemList = new ArrayList<>();
 
     @Bind(R.id.recyclerview_cafe) RecyclerView recyclerView;
 
