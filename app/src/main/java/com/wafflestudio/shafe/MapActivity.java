@@ -27,8 +27,7 @@ public class MapActivity extends AppCompatActivity {
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_LOCATION);
-        }
-        else {
+        } else {
             setMap();
         }
     }
@@ -37,8 +36,7 @@ public class MapActivity extends AppCompatActivity {
         if(requestCode == REQUEST_CODE_LOCATION) {
             if(grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 setMap();
-            }
-            else {
+            } else {
                 Toast.makeText(this, "허용하지 않으면 위치서비스를 사용하실 수 없습니다", Toast.LENGTH_SHORT).show();
                 finish();
             }

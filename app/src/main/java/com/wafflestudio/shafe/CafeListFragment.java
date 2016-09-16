@@ -20,8 +20,8 @@ import butterknife.ButterKnife;
  */
 public class CafeListFragment extends Fragment{
 
-    public static RecyclerView.Adapter<CafeListAdapter.ViewHolder> cafeListAdapter;
-    public static List<CafeItem> cafeItemList = new ArrayList<>();
+    public RecyclerView.Adapter<CafeListAdapter.ViewHolder> cafeListAdapter;
+    public List<CafeItem> cafeItemList = new ArrayList<>();
 
     @Bind(R.id.recyclerview_cafe) RecyclerView recyclerView;
 
@@ -32,7 +32,7 @@ public class CafeListFragment extends Fragment{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        cafeItemList.add( new CafeItem(getResources().getDrawable(R.drawable.sample_0), "Dog 1", "dog description 1"));
+        cafeItemList.add(new CafeItem(getResources().getDrawable(R.drawable.sample_0), "Dog 1", "dog description 1"));
         cafeItemList.add(new CafeItem(getResources().getDrawable(R.drawable.sample_1), "Dog2", "dog description 2"));
         cafeItemList.add(new CafeItem(getResources().getDrawable(R.drawable.sample_2), "Dog3", "dog description 3"));
         cafeItemList.add(new CafeItem(getResources().getDrawable(R.drawable.sample_3), "Dog4", "dog description 4"));
