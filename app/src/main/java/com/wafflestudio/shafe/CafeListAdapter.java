@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -19,11 +20,9 @@ import butterknife.ButterKnife;
  */
 public class CafeListAdapter extends RecyclerView.Adapter<CafeListAdapter.ViewHolder> {
 
-    private List<CafeItem> cafeItemList;
+    private List<CafeItem> cafeItemList = new ArrayList<>();
 
-    public CafeListAdapter(List<CafeItem> cafeItemList) {
-        this.cafeItemList = cafeItemList;
-    }
+    public CafeListAdapter() {}
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -76,4 +75,19 @@ public class CafeListAdapter extends RecyclerView.Adapter<CafeListAdapter.ViewHo
             this.descTextView.setText(cafeItem.getDesc());
         }
     }
+
+    public void addItem(CafeItem cafeItem) {
+        cafeItemList.add(cafeItem);
+    }
+
+//    public void addItem(Drawable icon, String title, String desc) {
+//        //TODO : 마저 구현할 것
+//        CafeItem item = new CafeItem();
+//
+//        item.setIcon(icon);
+//        item.setTitle(title);
+//        item.setDesc(desc);
+//
+//        cafeItemList.add(item);
+//    }
 }

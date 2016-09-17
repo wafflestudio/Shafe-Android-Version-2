@@ -19,16 +19,13 @@ public class CafeItem {
         this.descStr = desc;
     }
 
-//    일단은 안필요해보여서
-//    public void setIcon(Drawable icon) {
-//        iconDrawable = icon ;
-//    }
-//    public void setTitle(String title) {
-//        titleStr = title ;
-//    }
-//    public void setDesc(String desc) {
-//        descStr = desc ;
-//    }
+    public void setIcon(Drawable icon) { iconDrawable = icon ; }
+    public void setTitle(String title) {
+        titleStr = title ;
+    }
+    public void setDesc(String desc) {
+        descStr = desc ;
+    }
 
     public Drawable getIcon() {
         return this.iconDrawable ;
