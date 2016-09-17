@@ -17,13 +17,14 @@ public class MapActivity extends AppCompatActivity {
         //set toolbar
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar_main);
         setSupportActionBar(myToolbar);
+
         //enable up button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        MapView mapView = new MapView(this);
-        mapView.setDaumMapApiKey(BuildConfig.SHAFE_DAUM_MAP_API_KEY);
-
         ViewGroup mapViewContainer = (ViewGroup) findViewById(R.id.map_view);
-        mapViewContainer.addView(mapView);
+
+        MapManager searchResultMap = MapManager.getInstance(this);
+
+        mapViewContainer.addView(searchResultMap.getMapView());
     }
 }
