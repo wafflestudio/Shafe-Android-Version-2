@@ -7,7 +7,14 @@ import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class CafeDetailActivity extends AppCompatActivity {
+
+    @Bind(R.id.toolbar_main) Toolbar myToolbar;
+    @Bind(R.id.cafe_name) TextView nameView;
+    @Bind(R.id.cafe_image) ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,7 +22,7 @@ public class CafeDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cafe_detail);
 
         //set toolbar
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar_main);
+        ButterKnife.bind(this);
         setSupportActionBar(myToolbar);
         //enable up button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -24,10 +31,8 @@ public class CafeDetailActivity extends AppCompatActivity {
         Intent intent = this.getIntent();
         if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
             String title = intent.getStringExtra(Intent.EXTRA_TEXT);
-            ((TextView) this.findViewById(R.id.cafe_name))
-                    .setText(title);
-            ((ImageView) this.findViewById(R.id.cafe_image))
-                    .setImageDrawable(getResources().getDrawable(R.drawable.sample_5));
+            nameView.setText(title);
+            imageView.setImageDrawable(getResources().getDrawable(R.drawable.sample_5));
         }
     }
 }
