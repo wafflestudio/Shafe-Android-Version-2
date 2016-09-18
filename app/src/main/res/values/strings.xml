@@ -10,4 +10,8 @@
     <string name="title_activity_map">지도</string>
     <string name="title_activity_cafe_detail">Cafe Detail</string>
 
+    <string name="no_location_detected">
+        위치를 확인하지 못했습니다. 위치 서비스를 활성화시켜주시기 바랍니다.
+    </string>
+
 </resources>
