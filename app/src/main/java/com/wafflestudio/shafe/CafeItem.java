@@ -13,9 +13,13 @@ public class CafeItem {
     private String titleStr ;
     private String descStr ;
 
-    public void setIcon(Drawable icon) {
-        iconDrawable = icon ;
+    public CafeItem(Drawable icon, String title, String desc) {
+        this.iconDrawable = icon;
+        this.titleStr = title;
+        this.descStr = desc;
     }
+
+    public void setIcon(Drawable icon) { iconDrawable = icon ; }
     public void setTitle(String title) {
         titleStr = title ;
     }

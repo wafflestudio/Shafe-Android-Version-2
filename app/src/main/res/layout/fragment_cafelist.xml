@@ -9,8 +9,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp" />
 
-    <GridView
-        android:id="@+id/gridview_cafe"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview_cafe"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="10dp"
@@ -19,7 +19,6 @@
         android:verticalSpacing="10dp"
         android:horizontalSpacing="10dp"
         android:stretchMode="columnWidth"
-        android:gravity="center">
-    </GridView>
+        android:gravity="center"/>
 
 </LinearLayout>

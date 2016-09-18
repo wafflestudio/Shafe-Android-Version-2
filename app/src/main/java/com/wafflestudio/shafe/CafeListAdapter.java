@@ -1,70 +1,93 @@
 package com.wafflestudio.shafe;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.content.Intent;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by heesu on 16. 8. 7..
  */
-public class CafeListAdapter extends BaseAdapter {
+public class CafeListAdapter extends RecyclerView.Adapter<CafeListAdapter.ViewHolder> {
 
-    private ArrayList<CafeItem> CafeItemList = new ArrayList<>() ;
+    private List<CafeItem> cafeItemList = new ArrayList<>();
 
-    public CafeListAdapter() {
+    public CafeListAdapter() {}
+
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_cafe, null);
+
+        ViewHolder viewHolder = new ViewHolder(view);
+        return viewHolder;
     }
 
     @Override
-    public int getCount(){
-        return CafeItemList.size();
+    public void onBindViewHolder(ViewHolder holder, int position) {
+
+        CafeItem cafeItem = cafeItemList.get(position);
+        holder.setCafe(cafeItem);
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        if( convertView == null ){
-            LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.item_cafe, parent, false);
+    public int getItemCount() { return cafeItemList == null ? 0 : cafeItemList.size(); }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+
+        @Bind(R.id.imageView1)
+        ImageView iconImageView;
+        @Bind(R.id.textView1)
+        TextView titleTextView;
+        @Bind(R.id.textView2)
+        TextView descTextView;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    Context context = v.getContext();
+
+                    Intent intent = new Intent(context, CafeDetailActivity.class).putExtra(Intent.EXTRA_TEXT, titleTextView.getText().toString());
+                    context.startActivity(intent);
+                }
+            });
         }
-        //TODO : 마저 구현할 것
 
-        ImageView iconImageView = (ImageView) convertView.findViewById(R.id.imageView1) ;
-        TextView titleTextView = (TextView) convertView.findViewById(R.id.textView1) ;
-        TextView descTextView = (TextView) convertView.findViewById(R.id.textView2) ;
+        public void setCafe(CafeItem cafeItem) {
 
-        CafeItem listViewItem = CafeItemList.get(position);
-
-        iconImageView.setImageDrawable(listViewItem.getIcon());
-        titleTextView.setText(listViewItem.getTitle());
-        descTextView.setText(listViewItem.getDesc());
-
-        return convertView;
+            this.iconImageView.setImageDrawable(cafeItem.getIcon());
+            this.titleTextView.setText(cafeItem.getTitle());
+            this.descTextView.setText(cafeItem.getDesc());
+        }
     }
 
-    @Override
-    public long getItemId(int position) {
-        return position ;
+    public void addItem(CafeItem cafeItem) {
+        cafeItemList.add(cafeItem);
     }
 
-    @Override
-    public Object getItem(int position) {
-        return CafeItemList.get(position) ;
-    }
-
-    public void addItem(Drawable icon, String title, String desc) {
-        //TODO : 마저 구현할 것
-        CafeItem item = new CafeItem();
-
-        item.setIcon(icon);
-        item.setTitle(title);
-        item.setDesc(desc);
-
-        CafeItemList.add(item);
-    }
+//    public void addItem(Drawable icon, String title, String desc) {
+//        //TODO : 마저 구현할 것
+//        CafeItem item = new CafeItem();
+//
+//        item.setIcon(icon);
+//        item.setTitle(title);
+//        item.setDesc(desc);
+//
+//        cafeItemList.add(item);
+//    }
 }
