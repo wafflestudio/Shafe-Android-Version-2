@@ -44,23 +44,7 @@ public class MapActivity extends AppCompatActivity implements
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_LOCATION);
-        } else {
-            setMap();
         }
-    }
-
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if(requestCode == REQUEST_CODE_LOCATION) {
-            if(grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                setMap();
-            } else {
-                Toast.makeText(this, "허용하지 않으면 위치서비스를 사용하실 수 없습니다", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        }
-    }
-
-    public void setMap() {
         //set toolbar
         ButterKnife.bind(this);
         setSupportActionBar(myToolbar);
@@ -73,6 +57,17 @@ public class MapActivity extends AppCompatActivity implements
         searchResultMap = MapManager.getInstance(this);
 
         mapViewContainer.addView(searchResultMap.getMapView());
+    }
+
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if(requestCode == REQUEST_CODE_LOCATION) {
+            if(grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                return;
+            } else {
+                Toast.makeText(this, "허용하지 않으면 위치서비스를 사용하실 수 없습니다", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }
     }
 
     /**
@@ -114,24 +109,18 @@ public class MapActivity extends AppCompatActivity implements
 
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-            // TODO: 이거 희준이형이 비슷한 코드 넣었던거 같은데 나중에 머지하고 확인할 것
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_LOCATION);
         }
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
         if (mLastLocation != null) {
             searchResultMap.loadCurrentLocation(mLastLocation.getLatitude(), mLastLocation.getLongitude(), false);
-            searchResultMap.initializeMapWithSavedValue();
         }
         else {
+            searchResultMap.loadCurrentLocation(37.450254, 126.952557, false);
             Toast.makeText(this, R.string.no_location_detected, Toast.LENGTH_LONG).show();
         }
+        searchResultMap.initializeMapWithSavedValue();
     }
 
     @Override
