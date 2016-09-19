@@ -4,7 +4,9 @@ import android.Manifest;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.gun0912.tedpermission.PermissionListener;
@@ -25,6 +27,7 @@ public class MapActivity extends AppCompatActivity {
 
     @Bind(R.id.toolbar_main) Toolbar myToolbar;
     @Bind(R.id.map_view) ViewGroup mapViewContainer;
+    @Bind(R.id.button_search_on_this_location) Button button_search_on_this_location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,13 @@ public class MapActivity extends AppCompatActivity {
 
         //enable up button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        button_search_on_this_location.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //perfom search on this location
+                searchResultMap.saveMapCenterPointAndZoomLevel();
+            }
+        });
     }
 
     @Override
@@ -67,13 +77,5 @@ public class MapActivity extends AppCompatActivity {
                 .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
                 .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
                 .check();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        // TODO : save는 '이 지역에서 검색하기' 기능을 사용한 순간 하도록 나중에 수정할 것
-        searchResultMap.saveMapCenterPointAndZoomLevel();
     }
 }

@@ -10,7 +10,7 @@ import net.daum.mf.map.api.MapView;
 public final class MapManager {
     private static final MapManager instance = new MapManager();
     private static MapView mapView = null;
-    private static MapPoint mapCenterPoint;
+    private static MapPoint mapCenterPoint = null;
     private static int zoomLevel = 2;
 
     private MapManager() {}

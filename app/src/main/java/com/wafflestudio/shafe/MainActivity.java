@@ -100,17 +100,13 @@ public class MainActivity extends AppCompatActivity implements
         // in rare cases when a location is not available.
 
         // 권한이 없으면 default value로 대체
+        Location mLastLocation = null;
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-
-            if (mLastLocation != null) {
-                searchResultMap.loadLocation(mLastLocation.getLatitude(), mLastLocation.getLongitude(), false);
-            }
-            else {
-                searchResultMap.loadLocation(37.450254, 126.952557, false);
-                Toast.makeText(this, R.string.no_location_detected, Toast.LENGTH_LONG).show();
-            }
+            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        }
+        if (mLastLocation != null) {
+            searchResultMap.loadLocation(mLastLocation.getLatitude(), mLastLocation.getLongitude(), false);
         }
         else {
             searchResultMap.loadLocation(37.450254, 126.952557, false);
