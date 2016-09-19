@@ -17,12 +17,14 @@ public final class MapManager {
     private MapManager() {}
 
     // getInstance는 한 번만 호출할 것
-    public static MapManager getInstance(Context context) {
-        mapView = new MapView(context);
-
-        mapView.setDaumMapApiKey(BuildConfig.SHAFE_DAUM_MAP_API_KEY);
-
+    public static MapManager getInstance() {
         return instance;
+    }
+
+    // onStart() 에서 호출할 것. 그래야 필요할 때마다 MapView가 초기화됨.
+    public void createMapView(Context context) {
+        mapView = new MapView(context);
+        mapView.setDaumMapApiKey(BuildConfig.SHAFE_DAUM_MAP_API_KEY);
     }
 
     public MapView getMapView() {
@@ -39,10 +41,10 @@ public final class MapManager {
 
     public void initializeMapWithSavedValue() {
         // animated를 false로 넣어주면 에러가 뜸. 왜인지는 잘 모르겠음
-        mapView.setMapCenterPointAndZoomLevel(mapCenterPoint, zoomLevel, true);
+        mapView.setMapCenterPointAndZoomLevel(mapCenterPoint, zoomLevel, false);
     }
 
-    public void loadCurrentLocation(double latitude, double longitude, boolean overrideSavedValue) {
+    public void loadLocation(double latitude, double longitude, boolean overrideSavedValue) {
         if (mapCenterPoint == null || overrideSavedValue) {
             mapCenterPoint = MapPoint.mapPointWithGeoCoord(latitude, longitude);
         }
