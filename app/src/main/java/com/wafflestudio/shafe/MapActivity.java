@@ -1,17 +1,16 @@
 package com.wafflestudio.shafe;
 
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import android.Manifest;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import android.Manifest;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -32,9 +31,6 @@ public class MapActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_LOCATION);
-        }
         //set toolbar
         ButterKnife.bind(this);
         setSupportActionBar(myToolbar);
@@ -43,32 +39,41 @@ public class MapActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if(requestCode == REQUEST_CODE_LOCATION) {
-            if(grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                return;
-            } else {
-                Toast.makeText(this, "허용하지 않으면 위치서비스를 사용하실 수 없습니다", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        }
-    }
-
     @Override
     protected void onStart() {
         super.onStart();
 
-        searchResultMap.createMapView(this);
-        searchResultMap.initializeMapWithSavedValue();
+        PermissionListener permissionlistener = new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+                Toast.makeText(MapActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
 
-        mapViewContainer.addView(searchResultMap.getMapView());
+                searchResultMap.createMapView(MapActivity.this);
+                searchResultMap.initializeMapWithSavedValue();
+
+                mapViewContainer.addView(searchResultMap.getMapView());
+            }
+
+            @Override
+            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+                Toast.makeText(MapActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+
+                finish();
+            }
+        };
+
+        new TedPermission(this)
+                .setPermissionListener(permissionlistener)
+                .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
+                .check();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
 
-        // TODO : save를 어느 시점에서 할지 고민 해볼 것
+        // TODO : save는 '이 지역에서 검색하기' 기능을 사용한 순간 하도록 나중에 수정할 것
         searchResultMap.saveMapCenterPointAndZoomLevel();
     }
 }
