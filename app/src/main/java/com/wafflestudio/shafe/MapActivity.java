@@ -1,58 +1,81 @@
 package com.wafflestudio.shafe;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.view.ViewGroup;
 import android.Manifest;
-import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
-import android.support.v4.app.ActivityCompat;
 
-import net.daum.mf.map.api.MapView;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class MapActivity extends AppCompatActivity {
 
+    protected static final String TAG = "MapActivity";
+
+    protected MapManager searchResultMap = MapManager.getInstance();
+
     private static final int REQUEST_CODE_LOCATION = 2;
+
     @Bind(R.id.toolbar_main) Toolbar myToolbar;
     @Bind(R.id.map_view) ViewGroup mapViewContainer;
+    @Bind(R.id.button_search_on_this_location) Button button_search_on_this_location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_LOCATION);
-        } else {
-            setMap();
-        }
-    }
-
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if(requestCode == REQUEST_CODE_LOCATION) {
-            if(grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                setMap();
-            } else {
-                Toast.makeText(this, "허용하지 않으면 위치서비스를 사용하실 수 없습니다", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        }
-    }
-
-    public void setMap() {
         //set toolbar
         ButterKnife.bind(this);
         setSupportActionBar(myToolbar);
+
         //enable up button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        MapView mapView = new MapView(this);
-        mapView.setDaumMapApiKey(BuildConfig.SHAFE_DAUM_MAP_API_KEY);
+        button_search_on_this_location.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //perfom search on this location
+                searchResultMap.saveMapCenterPointAndZoomLevel();
+            }
+        });
+    }
 
-        mapViewContainer.addView(mapView);
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        PermissionListener permissionlistener = new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+                Toast.makeText(MapActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
+
+                searchResultMap.createMapView(MapActivity.this);
+                searchResultMap.initializeMapWithSavedValue();
+
+                mapViewContainer.addView(searchResultMap.getMapView());
+            }
+
+            @Override
+            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+                Toast.makeText(MapActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+
+                finish();
+            }
+        };
+
+        new TedPermission(this)
+                .setPermissionListener(permissionlistener)
+                .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
+                .check();
     }
 }
